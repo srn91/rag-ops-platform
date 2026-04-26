@@ -133,6 +133,16 @@ docker compose up --build
 
 The Docker path is also credential-free because retrieval uses deterministic hashed vectors rather than external embedding APIs.
 
+Make sure the Docker daemon is running before you start the stack. On macOS that usually means Docker Desktop is open before you run the compose command.
+
+If host port `8000` is already occupied on your machine, you can override it without editing repo files:
+
+```bash
+RAG_PORT=8006 docker compose up --build
+```
+
+Then open the containerized API on `http://127.0.0.1:8006`.
+
 Under the hood, `docker compose up --build` now builds a dedicated image with dependencies baked in and runs the API without live-reload flags, so the container path matches the published V1 story rather than a development-only shell command.
 
 ## Validation
