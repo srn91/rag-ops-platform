@@ -32,6 +32,8 @@ def run_evaluation(index: HybridIndex) -> dict[str, object]:
     answer_latencies_ms: list[float] = []
     total_latencies_ms: list[float] = []
     top_result_margins: list[float] = []
+    faithfulness_scores: list[float] = []
+    completeness_scores: list[float] = []
 
     for case in cases:
         retrieval_started = perf_counter()
@@ -43,6 +45,7 @@ def run_evaluation(index: HybridIndex) -> dict[str, object]:
         total_ms = round(retrieval_ms + answer_ms, 3)
         retrieved_doc_ids = [result.chunk.doc_id for result in search_results]
         citations = answer["citations"]
+        answer_diagnostics = answer["answer_diagnostics"]
 
         rank = next(
             (position for position, doc_id in enumerate(retrieved_doc_ids, start=1) if doc_id == case.expected_doc_id),
@@ -59,6 +62,8 @@ def run_evaluation(index: HybridIndex) -> dict[str, object]:
         retrieval_latencies_ms.append(retrieval_ms)
         answer_latencies_ms.append(answer_ms)
         total_latencies_ms.append(total_ms)
+        faithfulness_scores.append(float(answer_diagnostics["faithfulness"]["supported_sentence_ratio"]))
+        completeness_scores.append(float(answer_diagnostics["completeness"]["question_term_coverage_ratio"]))
         top_result_margin = (
             round(search_results[0].rerank_score - search_results[1].rerank_score, 4)
             if len(search_results) > 1
@@ -89,6 +94,7 @@ def run_evaluation(index: HybridIndex) -> dict[str, object]:
                     "top_overlap_terms": search_results[0].overlap_terms if search_results else [],
                     "top_chunk_id": search_results[0].chunk.chunk_id if search_results else None,
                 },
+                "answer_diagnostics": answer_diagnostics,
             }
         )
 
@@ -99,6 +105,10 @@ def run_evaluation(index: HybridIndex) -> dict[str, object]:
             "retrieval_hit_rate_at_3": round(hits / total_cases, 4),
             "citation_hit_rate": round(citation_hits / total_cases, 4),
             "mean_reciprocal_rank": round(reciprocal_rank_total / total_cases, 4),
+            "answer_diagnostics": {
+                "mean_faithfulness_score": round(mean(faithfulness_scores), 4) if faithfulness_scores else 0.0,
+                "mean_question_term_coverage": round(mean(completeness_scores), 4) if completeness_scores else 0.0,
+            },
             "latency_ms": {
                 "retrieval_p50": _percentile(retrieval_latencies_ms, 0.5),
                 "retrieval_p95": _percentile(retrieval_latencies_ms, 0.95),

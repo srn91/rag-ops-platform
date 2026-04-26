@@ -44,6 +44,8 @@ def test_query_returns_grounded_citations() -> None:
     assert payload["diagnostics"]["latency_ms"]["total"] >= 0.0
     assert payload["diagnostics"]["ranking"]["retrieved_chunk_count"] == 3
     assert "hallucinations" in payload["retrieval"][0]["overlap_terms"]
+    assert payload["answer_diagnostics"]["faithfulness"]["supported_sentence_ratio"] >= 0.5
+    assert payload["answer_diagnostics"]["completeness"]["question_term_coverage_ratio"] > 0.0
 
 
 def test_evaluation_endpoint_reports_summary_metrics() -> None:
@@ -53,6 +55,9 @@ def test_evaluation_endpoint_reports_summary_metrics() -> None:
     assert payload["summary"]["cases"] == 3
     assert payload["summary"]["retrieval_hit_rate_at_3"] >= 0.66
     assert payload["summary"]["citation_hit_rate"] >= 0.66
+    assert payload["summary"]["answer_diagnostics"]["mean_faithfulness_score"] >= 0.66
+    assert payload["summary"]["answer_diagnostics"]["mean_question_term_coverage"] > 0.0
     assert payload["summary"]["latency_ms"]["retrieval_p50"] >= 0.0
     assert payload["summary"]["ranking_diagnostics"]["mean_top_result_margin"] >= 0.0
     assert "ranking_diagnostics" in payload["cases"][0]
+    assert "answer_diagnostics" in payload["cases"][0]

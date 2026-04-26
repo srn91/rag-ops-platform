@@ -19,8 +19,8 @@ The current V1 is intentionally local and deterministic. Instead of hiding the s
 - Each chunk is indexed with a BM25-style sparse representation and a deterministic hashed vector sketch.
 - Query-time ranking combines sparse and hashed-vector scores, then applies a simple reranker.
 - The answer generator selects the highest-overlap sentences from retrieved chunks and returns citations.
-- Query traces surface overlap terms, rerank margins, and latency measurements for operational debugging.
-- A golden question set measures retrieval hit rate, citation hit rate, mean reciprocal rank, and latency/ranking diagnostics.
+- Query traces surface overlap terms, rerank margins, latency measurements, and answer-support diagnostics for operational debugging.
+- A golden question set measures retrieval hit rate, citation hit rate, mean reciprocal rank, and answer/ranking diagnostics.
 
 ```mermaid
 flowchart LR
@@ -174,7 +174,7 @@ The repo includes three verification paths:
 
 - `make lint` runs Ruff against the application and tests.
 - `make test` exercises the API, retrieval, chunking, grounded-answer, and evaluation paths with pytest.
-- `make evaluate` runs the golden question set and reports retrieval hit rate, citation hit rate, and mean reciprocal rank.
+- `make evaluate` runs the golden question set and reports retrieval hit rate, citation hit rate, mean reciprocal rank, and answer-support diagnostics.
 
 Expected local verification flow:
 
@@ -186,7 +186,7 @@ Current verification snapshot from the latest local run:
 
 - `make lint`: passed
 - `make test`: passed (`8 passed`)
-- `make evaluate`: passed with `retrieval_hit_rate_at_3=1.0`, `citation_hit_rate=1.0`, `mean_reciprocal_rank=1.0`, plus latency and rerank-margin diagnostics
+- `make evaluate`: passed with `retrieval_hit_rate_at_3=1.0`, `citation_hit_rate=1.0`, `mean_reciprocal_rank=1.0`, plus latency, faithfulness, completeness, and rerank-margin diagnostics
 
 ## Current Capabilities
 
@@ -196,7 +196,7 @@ The current V1 supports:
 - sentence-aware chunking with overlap
 - hybrid retrieval using sparse and hashed-vector signals
 - reranked, citation-backed answers
-- per-query latency and ranking diagnostics in both `/query` and `/evaluation`
+- per-query latency, faithfulness, completeness, and ranking diagnostics in both `/query` and `/evaluation`
 - document inventory and health endpoints
 - retrieval evaluation with golden questions
 
@@ -206,6 +206,4 @@ Possible follow-on work outside the current shipped scope:
 
 1. add PDF and HTML ingestion with metadata extraction
 2. replace the hashed vector sketch with real embedding generation behind a pluggable interface
-3. add faithfulness diagnostics that compare answer text against the cited retrieval context
-4. support larger corpora with persistent vector and sparse indexes
-5. expand evaluation into faithfulness and answer completeness checks
+3. support larger corpora with persistent vector and sparse indexes
