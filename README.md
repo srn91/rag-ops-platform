@@ -2,6 +2,8 @@
 
 A production-style RAG service that ingests a small document corpus, builds a transparent hybrid retrieval index, reranks candidate chunks, and returns citation-backed answers plus retrieval evaluation metrics.
 
+The current V1 runs fully local and does not require external model credentials or hosted vector infrastructure.
+
 ## Problem
 
 Many RAG demos prove that a model can answer questions, but they do not prove that the retrieval layer is grounded, inspectable, or testable. This project focuses on the infrastructure around the answer: corpus ingestion, chunking, hybrid retrieval, ranking traces, citations, and evaluation hooks that make the system interview-defensible.
@@ -93,6 +95,8 @@ make evaluate
 ```bash
 docker compose up --build
 ```
+
+The Docker path is also credential-free because retrieval uses deterministic hashed vectors rather than external embedding APIs.
 
 ## Validation
 

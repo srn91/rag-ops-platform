@@ -8,7 +8,7 @@ A project is not complete until every required item below is checked.
 
 - Project name: rag-ops-platform
 - Last reviewed: 2026-04-26
-- Current stage: local V1 complete; publish blocked by invalid GitHub CLI token
+- Current stage: local V1 complete, verification refreshed, local git initialized; publish blocked by invalid GitHub CLI token
 
 ## Scope
 
@@ -36,7 +36,7 @@ A project is not complete until every required item below is checked.
 ## Publish Readiness
 
 - [x] No secrets, tokens, or private notes are committed
-- [ ] Git history is meaningful and natural
+- [x] Git history is meaningful and natural
 - [ ] Repo can be initialized or updated cleanly through the publish script
 - [x] Tracker files are ready to be updated with the current status
 
