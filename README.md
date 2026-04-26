@@ -1,12 +1,14 @@
 # rag-ops-platform
 
-A local, inspectable RAG service that ingests a small document corpus, builds a transparent hybrid retrieval index, reranks candidate chunks, and returns citation-backed answers plus retrieval evaluation metrics.
+An auditable RAG pipeline for grounded question answering that ingests a small document corpus, builds a transparent hybrid retrieval index, reranks candidate chunks, and returns citation-backed answers with retrieval evaluation metrics.
 
-The current V1 runs fully local and does not require external model credentials or hosted vector infrastructure.
+This repo is aimed at the production risks companies actually care about: reducing hallucinations, surfacing why retrieval failed, and making LLM-backed answers easier to trust in internal knowledge search, support copilots, and compliance-sensitive Q&A systems.
+
+The current V1 runs fully local and does not require external model credentials or hosted vector infrastructure, so the full retrieval path stays reproducible and inspectable.
 
 ## Problem
 
-Many RAG demos prove that a model can answer questions, but they do not prove that the retrieval layer is grounded, inspectable, or testable. This project focuses on the infrastructure around the answer: corpus ingestion, chunking, hybrid retrieval, ranking traces, citations, and evaluation hooks that make the system interview-defensible.
+Many RAG demos prove that a model can answer questions, but they do not prove that the retrieval layer is grounded, inspectable, or testable. This project focuses on the infrastructure around the answer: corpus ingestion, chunking, hybrid retrieval, ranking traces, citations, and evaluation hooks that reduce hallucination risk and make retrieval failures debuggable.
 
 ## Architecture
 
