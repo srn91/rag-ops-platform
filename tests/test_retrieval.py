@@ -26,3 +26,4 @@ def test_grounded_answer_falls_back_cleanly_when_no_results_exist() -> None:
     assert payload["citations"] == []
     assert payload["retrieval"] == []
     assert "No grounded answer" in payload["answer"]
+    assert payload["answer_diagnostics"]["faithfulness"]["supported_sentence_ratio"] == 0.0

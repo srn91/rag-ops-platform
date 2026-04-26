@@ -11,6 +11,18 @@ def build_grounded_answer(question: str, results: list[SearchResult]) -> dict[st
             "answer": "No grounded answer could be produced because the query did not match the indexed sample corpus.",
             "citations": [],
             "retrieval": [],
+            "answer_diagnostics": {
+                "faithfulness": {
+                    "supported_sentence_ratio": 0.0,
+                    "supported_sentences": 0,
+                    "unsupported_sentences": [],
+                },
+                "completeness": {
+                    "question_term_coverage_ratio": 0.0,
+                    "covered_question_terms": [],
+                    "missing_question_terms": [],
+                },
+            },
         }
 
     question_tokens = set(tokenize(question))
@@ -84,4 +96,46 @@ def build_grounded_answer(question: str, results: list[SearchResult]) -> dict[st
         "answer": answer,
         "citations": citations,
         "retrieval": retrieval,
+        "answer_diagnostics": _answer_diagnostics(question, answer, results, citations),
+    }
+
+
+def _answer_diagnostics(
+    question: str,
+    answer: str,
+    results: list[SearchResult],
+    citations: list[dict[str, object]],
+) -> dict[str, object]:
+    answer_sentences = [sentence.strip() for sentence in split_sentences(answer) if sentence.strip()]
+    citation_context = " ".join(str(citation["snippet"]) for citation in citations)
+    retrieval_context = " ".join(result.chunk.text for result in results[:3])
+    evidence_tokens = set(tokenize(f"{citation_context} {retrieval_context}"))
+
+    supported_sentences = 0
+    unsupported_sentences: list[str] = []
+    for sentence in answer_sentences:
+        sentence_tokens = set(tokenize(sentence))
+        if sentence_tokens and sentence_tokens <= evidence_tokens:
+            supported_sentences += 1
+        else:
+            unsupported_sentences.append(sentence)
+
+    question_terms = sorted(set(tokenize(question)))
+    answer_tokens = set(tokenize(answer))
+    covered_question_terms = sorted(term for term in question_terms if term in answer_tokens)
+    missing_question_terms = sorted(term for term in question_terms if term not in answer_tokens)
+
+    return {
+        "faithfulness": {
+            "supported_sentence_ratio": round(supported_sentences / len(answer_sentences), 4) if answer_sentences else 0.0,
+            "supported_sentences": supported_sentences,
+            "unsupported_sentences": unsupported_sentences,
+        },
+        "completeness": {
+            "question_term_coverage_ratio": round(len(covered_question_terms) / len(question_terms), 4)
+            if question_terms
+            else 0.0,
+            "covered_question_terms": covered_question_terms,
+            "missing_question_terms": missing_question_terms,
+        },
     }
