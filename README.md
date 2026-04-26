@@ -65,7 +65,7 @@ This implementation makes three deliberate V1 tradeoffs:
 ### Local API
 
 ```bash
-git clone git@github.com:srn91/rag-ops-platform.git
+git clone https://github.com/srn91/rag-ops-platform.git
 cd rag-ops-platform
 python3 -m pip install -r requirements.txt
 make run
