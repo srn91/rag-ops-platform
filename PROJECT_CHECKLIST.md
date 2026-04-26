@@ -43,8 +43,8 @@ A project is not complete until every required item below is checked.
 ## Post-Publish
 
 - [ ] Remote push was verified
-- [ ] Queue and portfolio status trackers were updated
-- [ ] Private prep notes were refreshed from the actual shipped project files
+- [x] Queue and portfolio status trackers were updated
+- [x] Private prep notes were refreshed from the actual shipped project files
 - [ ] Final repo review was done from an outsider's perspective
 
 ## Completion Rule
