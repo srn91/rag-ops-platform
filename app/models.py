@@ -27,6 +27,7 @@ class SearchResult:
     dense_score: float
     combined_score: float
     rerank_score: float
+    overlap_terms: list[str]
 
 
 @dataclass(frozen=True)
@@ -34,4 +35,3 @@ class EvaluationCase:
     question: str
     expected_doc_id: str
     rationale: str
-

@@ -41,6 +41,9 @@ def test_query_returns_grounded_citations() -> None:
     assert "citations" in payload
     assert payload["citations"][0]["doc_id"] == "retrieval-quality-playbook"
     assert "hallucinations" in payload["answer"].lower()
+    assert payload["diagnostics"]["latency_ms"]["total"] >= 0.0
+    assert payload["diagnostics"]["ranking"]["retrieved_chunk_count"] == 3
+    assert "hallucinations" in payload["retrieval"][0]["overlap_terms"]
 
 
 def test_evaluation_endpoint_reports_summary_metrics() -> None:
@@ -50,3 +53,6 @@ def test_evaluation_endpoint_reports_summary_metrics() -> None:
     assert payload["summary"]["cases"] == 3
     assert payload["summary"]["retrieval_hit_rate_at_3"] >= 0.66
     assert payload["summary"]["citation_hit_rate"] >= 0.66
+    assert payload["summary"]["latency_ms"]["retrieval_p50"] >= 0.0
+    assert payload["summary"]["ranking_diagnostics"]["mean_top_result_margin"] >= 0.0
+    assert "ranking_diagnostics" in payload["cases"][0]

@@ -73,6 +73,8 @@ def build_grounded_answer(question: str, results: list[SearchResult]) -> dict[st
             "dense_score": result.dense_score,
             "combined_score": result.combined_score,
             "rerank_score": result.rerank_score,
+            "overlap_terms": result.overlap_terms,
+            "overlap_term_count": len(result.overlap_terms),
         }
         for result in results
     ]
@@ -83,4 +85,3 @@ def build_grounded_answer(question: str, results: list[SearchResult]) -> dict[st
         "citations": citations,
         "retrieval": retrieval,
     }
-

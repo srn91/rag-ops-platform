@@ -153,6 +153,7 @@ class HybridIndex:
         ):
             combined = 0.6 * sparse_norm + 0.4 * dense_norm
             rerank = combined + self._rerank_bonus(question_tokens, chunk)
+            overlap_terms = sorted(question_tokens & set(chunk.token_counts))
             results.append(
                 SearchResult(
                     chunk=chunk,
@@ -160,6 +161,7 @@ class HybridIndex:
                     dense_score=round(dense_score, 4),
                     combined_score=round(combined, 4),
                     rerank_score=round(rerank, 4),
+                    overlap_terms=overlap_terms,
                 )
             )
 
@@ -188,4 +190,3 @@ class HybridIndex:
         title_bonus = 0.08 if question_tokens & set(tokenize(chunk.title)) else 0.0
         exact_bonus = 0.12 if all(token in chunk_tokens for token in question_tokens) else 0.0
         return overlap_ratio * 0.3 + title_bonus + exact_bonus
-
