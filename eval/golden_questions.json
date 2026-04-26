@@ -7,7 +7,7 @@
   {
     "question": "Why does the system use hybrid retrieval instead of only keyword search?",
     "expected_doc_id": "retrieval-quality-playbook",
-    "rationale": "The retrieval playbook explains why the repo combines sparse ranking with a hashed vector sketch."
+    "rationale": "The retrieval playbook explains why the repo combines sparse ranking with a deterministic local dense embedding signal."
   },
   {
     "question": "Where are retrieval hit rate and citation coverage checked?",

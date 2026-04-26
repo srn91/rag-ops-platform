@@ -14,15 +14,17 @@ class RAGService:
         self.documents = load_documents()
         self.index = HybridIndex(self.documents)
 
-    def stats(self) -> dict[str, int]:
+    def stats(self) -> dict[str, object]:
         return self.index.stats()
 
-    def list_documents(self) -> list[dict[str, str]]:
+    def list_documents(self) -> list[dict[str, object]]:
         return [
             {
                 "doc_id": document.doc_id,
                 "title": document.title,
                 "path": document.path,
+                "content_type": document.content_type,
+                "metadata": document.metadata,
             }
             for document in self.documents
         ]
@@ -61,6 +63,9 @@ def _query_diagnostics(
                 "top_result_margin": 0.0,
                 "top_overlap_terms": [],
             },
+            "embedding": {
+                "provider": None,
+            },
         }
 
     top_margin = (
@@ -79,5 +84,8 @@ def _query_diagnostics(
             "top_result_margin": top_margin,
             "top_overlap_terms": results[0].overlap_terms,
             "top_chunk_id": results[0].chunk.chunk_id,
+        },
+        "embedding": {
+            "provider": results[0].embedding_provider,
         },
     }

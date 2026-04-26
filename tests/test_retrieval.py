@@ -20,6 +20,35 @@ def test_hybrid_index_returns_empty_results_for_blank_query() -> None:
     assert index.search("   ", top_k=3) == []
 
 
+def test_load_documents_supports_markdown_html_and_pdf_sources() -> None:
+    documents = load_documents()
+
+    assert {document.content_type for document in documents} == {"markdown", "html", "pdf"}
+    html_doc = next(document for document in documents if document.content_type == "html")
+    pdf_doc = next(document for document in documents if document.content_type == "pdf")
+    assert html_doc.metadata["meta_description"].startswith("Operational runbook")
+    assert pdf_doc.metadata["page_count"] == 1
+    assert "Compliance Answering Checklist" in pdf_doc.text
+
+
+def test_hybrid_index_can_retrieve_html_ingested_content() -> None:
+    index = HybridIndex(load_documents())
+    results = index.search("What should teams inspect before changing prompts?", top_k=3)
+
+    assert results
+    assert results[0].chunk.doc_id == "support-copilot-runbook"
+    assert results[0].embedding_provider == "local_tfidf_svd"
+
+
+def test_hybrid_index_can_retrieve_pdf_ingested_content() -> None:
+    index = HybridIndex(load_documents())
+    results = index.search("What should be recorded for compliance-sensitive answers?", top_k=3)
+
+    assert results
+    assert results[0].chunk.doc_id == "compliance-answering-checklist"
+    assert results[0].chunk.content_type == "pdf"
+
+
 def test_grounded_answer_falls_back_cleanly_when_no_results_exist() -> None:
     payload = build_grounded_answer("What is the answer?", [])
 

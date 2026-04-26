@@ -6,5 +6,4 @@ Evaluation is exposed through both the FastAPI service and the local CLI. That k
 
 Operationally, the service exposes health, corpus inventory, query, and evaluation endpoints. Those endpoints create a small but realistic control plane for a retrieval system: operators can confirm what is indexed, run a known question, inspect citations, and compare current behavior with the expected answer sources.
 
-As the project grows, this evaluation layer can expand into latency tracking, faithfulness scoring with an external model judge, and offline replay against a larger incident corpus. For V1, the focus is deterministic validation that works without external credentials.
-
+This evaluation layer is intentionally deterministic and local-first, which keeps latency tracking, faithfulness checks, and offline replay reproducible without external credentials.

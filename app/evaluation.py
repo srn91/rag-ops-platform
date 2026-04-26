@@ -93,6 +93,7 @@ def run_evaluation(index: HybridIndex) -> dict[str, object]:
                     "top_result_margin": top_result_margin,
                     "top_overlap_terms": search_results[0].overlap_terms if search_results else [],
                     "top_chunk_id": search_results[0].chunk.chunk_id if search_results else None,
+                    "embedding_provider": search_results[0].embedding_provider if search_results else None,
                 },
                 "answer_diagnostics": answer_diagnostics,
             }

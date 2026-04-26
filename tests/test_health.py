@@ -11,8 +11,14 @@ def test_root() -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload["project"] == "rag-ops-platform"
-    assert payload["status"] == "v1-local"
-    assert payload["indexed_assets"]["documents"] == 3
+    assert payload["status"] == "local-ready"
+    assert payload["indexed_assets"]["documents"] == 5
+    assert payload["indexed_assets"]["embedding_provider"] == "local_tfidf_svd"
+    assert payload["indexed_assets"]["content_types"] == {
+        "markdown": 3,
+        "html": 1,
+        "pdf": 1,
+    }
 
 
 def test_health() -> None:
@@ -27,8 +33,12 @@ def test_documents_endpoint_lists_indexed_corpus() -> None:
     response = client.get("/documents")
     assert response.status_code == 200
     payload = response.json()
-    assert len(payload["documents"]) == 3
+    assert len(payload["documents"]) == 5
     assert payload["documents"][0]["path"].startswith("corpus/")
+    by_type = {document["content_type"] for document in payload["documents"]}
+    assert by_type == {"markdown", "html", "pdf"}
+    pdf_doc = next(document for document in payload["documents"] if document["content_type"] == "pdf")
+    assert pdf_doc["metadata"]["page_count"] == 1
 
 
 def test_query_returns_grounded_citations() -> None:
@@ -44,6 +54,8 @@ def test_query_returns_grounded_citations() -> None:
     assert payload["diagnostics"]["latency_ms"]["total"] >= 0.0
     assert payload["diagnostics"]["ranking"]["retrieved_chunk_count"] == 3
     assert "hallucinations" in payload["retrieval"][0]["overlap_terms"]
+    assert payload["diagnostics"]["embedding"]["provider"] == "local_tfidf_svd"
+    assert payload["retrieval"][0]["embedding_provider"] == "local_tfidf_svd"
     assert payload["answer_diagnostics"]["faithfulness"]["supported_sentence_ratio"] >= 0.5
     assert payload["answer_diagnostics"]["completeness"]["question_term_coverage_ratio"] > 0.0
 

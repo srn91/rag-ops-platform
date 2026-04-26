@@ -6,6 +6,8 @@ class SourceDocument:
     doc_id: str
     title: str
     path: str
+    content_type: str
+    metadata: dict[str, object]
     text: str
 
 
@@ -15,9 +17,10 @@ class DocumentChunk:
     doc_id: str
     title: str
     path: str
+    content_type: str
+    metadata: dict[str, object]
     text: str
     token_counts: dict[str, int]
-    vector: tuple[float, ...]
 
 
 @dataclass(frozen=True)
@@ -28,6 +31,7 @@ class SearchResult:
     combined_score: float
     rerank_score: float
     overlap_terms: list[str]
+    embedding_provider: str
 
 
 @dataclass(frozen=True)
