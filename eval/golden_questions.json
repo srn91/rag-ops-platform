@@ -1,0 +1,18 @@
+[
+  {
+    "question": "How does the platform keep chunking deterministic during local development?",
+    "expected_doc_id": "ingestion-pipeline",
+    "rationale": "The ingestion document explains UTF-8 normalization and sentence-aware chunking."
+  },
+  {
+    "question": "Why does the system use hybrid retrieval instead of only keyword search?",
+    "expected_doc_id": "retrieval-quality-playbook",
+    "rationale": "The retrieval playbook contrasts sparse and dense retrieval failure modes."
+  },
+  {
+    "question": "Where are retrieval hit rate and citation coverage checked?",
+    "expected_doc_id": "evaluation-operations",
+    "rationale": "The evaluation document covers the golden question set and summary metrics."
+  }
+]
+
