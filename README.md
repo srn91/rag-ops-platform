@@ -145,6 +145,14 @@ Then open the containerized API on `http://127.0.0.1:8006`.
 
 Under the hood, `docker compose up --build` now builds a dedicated image with dependencies baked in and runs the API without live-reload flags, so the container path matches the published V1 story rather than a development-only shell command.
 
+## Hosted Deployment
+
+- Live URL: `https://rag-ops-platform.onrender.com`
+- Click first: [`/evaluation`](https://rag-ops-platform.onrender.com/evaluation)
+- Browser smoke: Render-hosted `/evaluation` loaded in a real browser and returned the live retrieval-quality summary with all three golden cases present.
+- Render service config: Python web service on `main`, auto-deploy on commit, region `oregon`, plan `free`, build `pip install -r requirements.txt`, start `uvicorn app.main:app --host 0.0.0.0 --port $PORT`, health check `/health`.
+- Render deploy command: `render deploys create srv-d7n6572pmmbs73cb5i10 --confirm`
+
 ## Validation
 
 The repo includes three verification paths:
