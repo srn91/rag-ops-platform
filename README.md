@@ -200,13 +200,9 @@ The current V1 supports:
 - document inventory and health endpoints
 - retrieval evaluation with golden questions
 
-## What This Proves
+## Future Expansion
 
-This repo proves the retrieval layer, not just the answer text. A hiring reviewer can inspect chunking, hybrid ranking, reranking, citations, and evaluation metrics from the same local codebase, which makes the system easier to trust and harder to hand-wave.
-
-## Next Steps
-
-Realistic follow-up work for the next milestone:
+Possible follow-on work outside the current shipped scope:
 
 1. add PDF and HTML ingestion with metadata extraction
 2. replace the hashed vector sketch with real embedding generation behind a pluggable interface
