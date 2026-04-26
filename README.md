@@ -128,7 +128,7 @@ Example response shape:
       "retrieved_chunk_count": 3,
       "top_result_margin": 0.18
     }
-  ]
+  }
 }
 ```
 
