@@ -13,7 +13,7 @@ service = RAGService()
 
 app = FastAPI(
     title="RAG Ops Platform",
-    description="A local, production-style RAG demo with ingestion, hybrid retrieval, reranking, citations, and evaluation.",
+    description="A local, inspectable RAG demo with ingestion, hybrid retrieval, reranking, citations, and evaluation.",
     version="0.2.0",
 )
 
@@ -26,7 +26,7 @@ def root() -> dict[str, object]:
         "capabilities": [
             "markdown corpus ingestion",
             "sentence-aware chunking",
-            "hybrid sparse+dense retrieval",
+            "hybrid sparse + hashed-vector retrieval",
             "lightweight reranking",
             "citation-backed answers",
             "retrieval evaluation",
@@ -53,4 +53,3 @@ def query(request: QueryRequest) -> dict[str, object]:
 @app.get("/evaluation")
 def evaluation() -> dict[str, object]:
     return service.evaluate()
-

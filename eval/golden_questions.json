@@ -7,7 +7,7 @@
   {
     "question": "Why does the system use hybrid retrieval instead of only keyword search?",
     "expected_doc_id": "retrieval-quality-playbook",
-    "rationale": "The retrieval playbook contrasts sparse and dense retrieval failure modes."
+    "rationale": "The retrieval playbook explains why the repo combines sparse ranking with a hashed vector sketch."
   },
   {
     "question": "Where are retrieval hit rate and citation coverage checked?",
@@ -15,4 +15,3 @@
     "rationale": "The evaluation document covers the golden question set and summary metrics."
   }
 ]
-

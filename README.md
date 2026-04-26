@@ -1,6 +1,6 @@
 # rag-ops-platform
 
-A production-style RAG service that ingests a small document corpus, builds a transparent hybrid retrieval index, reranks candidate chunks, and returns citation-backed answers plus retrieval evaluation metrics.
+A local, inspectable RAG service that ingests a small document corpus, builds a transparent hybrid retrieval index, reranks candidate chunks, and returns citation-backed answers plus retrieval evaluation metrics.
 
 The current V1 runs fully local and does not require external model credentials or hosted vector infrastructure.
 
@@ -14,8 +14,8 @@ The current V1 is intentionally local and deterministic. Instead of hiding the s
 
 - Markdown documents are loaded from a versioned sample corpus.
 - The ingestion layer creates sentence-aware chunks with one-sentence overlap.
-- Each chunk is indexed with a BM25-style sparse representation and a hashed dense vector.
-- Query-time ranking combines sparse and dense scores, then applies a simple reranker.
+- Each chunk is indexed with a BM25-style sparse representation and a deterministic hashed vector sketch.
+- Query-time ranking combines sparse and hashed-vector scores, then applies a simple reranker.
 - The answer generator selects the highest-overlap sentences from retrieved chunks and returns citations.
 - A golden question set measures retrieval hit rate, citation hit rate, and mean reciprocal rank.
 
@@ -23,7 +23,7 @@ The current V1 is intentionally local and deterministic. Instead of hiding the s
 flowchart LR
     A["corpus/*.md"] --> B["Document loader"]
     B --> C["Sentence-aware chunker"]
-    C --> D["Hybrid index<br/>BM25-style sparse + hashed dense vectors"]
+    C --> D["Hybrid index<br/>BM25-style sparse + hashed vector sketches"]
     D --> E["Hybrid search"]
     E --> F["Lightweight reranker"]
     F --> G["Answer composer"]
@@ -56,7 +56,7 @@ rag-ops-platform/
 
 This implementation makes three deliberate V1 tradeoffs:
 
-1. Dense retrieval uses deterministic hashed term vectors instead of external embeddings. That keeps the repo runnable without credentials and makes ranking behavior stable in tests.
+1. The vector side uses deterministic hashed term sketches instead of learned embeddings. That keeps the repo runnable without credentials and makes ranking behavior stable in tests, but it is a lexical proxy rather than semantic embedding retrieval.
 2. Answer generation is extractive rather than generative. The current goal is grounded retrieval and citation quality, not free-form model fluency.
 3. The corpus is small and local. This repo is proving system shape and evaluation discipline before adding PDF ingestion, remote storage, or hosted vector infrastructure.
 
@@ -99,6 +99,8 @@ docker compose up --build
 
 The Docker path is also credential-free because retrieval uses deterministic hashed vectors rather than external embedding APIs.
 
+Under the hood, `docker compose up --build` now builds a dedicated image with dependencies baked in and runs the API without live-reload flags, so the container path matches the published V1 story rather than a development-only shell command.
+
 ## Validation
 
 The repo includes three verification paths:
@@ -125,7 +127,7 @@ The current V1 supports:
 
 - corpus ingestion from versioned Markdown files
 - sentence-aware chunking with overlap
-- hybrid retrieval using sparse and dense signals
+- hybrid retrieval using sparse and hashed-vector signals
 - reranked, citation-backed answers
 - document inventory and health endpoints
 - retrieval evaluation with golden questions
@@ -135,7 +137,7 @@ The current V1 supports:
 Realistic follow-up work for the next milestone:
 
 1. add PDF and HTML ingestion with metadata extraction
-2. replace hashed vectors with real embedding generation behind a pluggable interface
+2. replace the hashed vector sketch with real embedding generation behind a pluggable interface
 3. add latency and ranking diagnostics for query traces
 4. support larger corpora with persistent vector and sparse indexes
 5. expand evaluation into faithfulness and answer completeness checks
