@@ -52,6 +52,7 @@ def build_grounded_answer(question: str, results: list[SearchResult]) -> dict[st
                 "title": result.chunk.title,
                 "chunk_id": result.chunk.chunk_id,
                 "path": result.chunk.path,
+                "content_type": result.chunk.content_type,
                 "snippet": cleaned,
                 "score": result.rerank_score,
             },
@@ -68,6 +69,7 @@ def build_grounded_answer(question: str, results: list[SearchResult]) -> dict[st
                 "title": results[0].chunk.title,
                 "chunk_id": results[0].chunk.chunk_id,
                 "path": results[0].chunk.path,
+                "content_type": results[0].chunk.content_type,
                 "snippet": results[0].chunk.text[:220].strip(),
                 "score": results[0].rerank_score,
             },
@@ -81,12 +83,14 @@ def build_grounded_answer(question: str, results: list[SearchResult]) -> dict[st
             "title": result.chunk.title,
             "chunk_id": result.chunk.chunk_id,
             "path": result.chunk.path,
+            "content_type": result.chunk.content_type,
             "sparse_score": result.sparse_score,
             "dense_score": result.dense_score,
             "combined_score": result.combined_score,
             "rerank_score": result.rerank_score,
             "overlap_terms": result.overlap_terms,
             "overlap_term_count": len(result.overlap_terms),
+            "embedding_provider": result.embedding_provider,
         }
         for result in results
     ]

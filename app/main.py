@@ -22,11 +22,11 @@ app = FastAPI(
 def root() -> dict[str, object]:
     return {
         "project": "rag-ops-platform",
-        "status": "v1-local",
+        "status": "local-ready",
         "capabilities": [
-            "markdown corpus ingestion",
+            "markdown/html/pdf corpus ingestion",
             "sentence-aware chunking",
-            "hybrid sparse + hashed-vector retrieval",
+            "hybrid sparse + dense retrieval",
             "lightweight reranking",
             "citation-backed answers",
             "retrieval evaluation",

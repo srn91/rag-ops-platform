@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Support Copilot Runbook</title>
+    <meta
+      name="description"
+      content="Operational runbook for handling retrieval misses and weak citations in customer support copilots."
+    />
+  </head>
+  <body>
+    <article>
+      <h1>Support Copilot Runbook</h1>
+      <p>
+        When a support copilot answers with weak evidence, the first response is to inspect the
+        retrieved chunks, overlap terms, and rerank margin before changing prompts.
+      </p>
+      <p>
+        The platform should treat missing citations and low-support answers as retrieval incidents,
+        not as prompt-tuning problems. Operations teams should confirm whether the source article
+        was ingested, whether the chunk boundary hid the relevant sentence, and whether the dense
+        embedding signal disagreed with the sparse keyword signal.
+      </p>
+    </article>
+  </body>
+</html>
