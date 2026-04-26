@@ -34,6 +34,19 @@ flowchart LR
     D --> L["/health"]
 ```
 
+## Query Contract
+
+The main request shape is intentionally small so the retrieval path stays easy to test and explain:
+
+```json
+{
+  "question": "How does the platform reduce hallucinations?",
+  "top_k": 3
+}
+```
+
+The `/query` response returns grounded answer data, citations, and a retrieval trace. The important fields are `question`, `answer`, `citations`, and `retrieval`.
+
 ## Repo Layout
 
 ```text
@@ -85,6 +98,27 @@ curl -X POST http://127.0.0.1:8000/query \
   -d '{"question":"How does the platform reduce hallucinations?","top_k":3}'
 ```
 
+Example response shape:
+
+```json
+{
+  "question": "How does the platform reduce hallucinations?",
+  "answer": "...",
+  "citations": [
+    {
+      "doc_id": "retrieval-quality-playbook",
+      "chunk_id": "retrieval-quality-playbook:2"
+    }
+  ],
+  "retrieval": [
+    {
+      "doc_id": "retrieval-quality-playbook",
+      "rerank_score": 0.91
+    }
+  ]
+}
+```
+
 ### CLI Evaluation
 
 ```bash
@@ -131,6 +165,10 @@ The current V1 supports:
 - reranked, citation-backed answers
 - document inventory and health endpoints
 - retrieval evaluation with golden questions
+
+## What This Proves
+
+This repo proves the retrieval layer, not just the answer text. A hiring reviewer can inspect chunking, hybrid ranking, reranking, citations, and evaluation metrics from the same local codebase, which makes the system easier to trust and harder to hand-wave.
 
 ## Next Steps
 
