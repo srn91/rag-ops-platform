@@ -14,14 +14,13 @@ The current implementation runs fully local and does not require external model 
 | Test coverage | `make test` currently passes `11` tests covering API, retrieval, chunking, grounded-answer, and evaluation paths. |
 | Latency visibility | `/query` returns retrieval, answer, and total latency diagnostics; the sample query path reports millisecond-level local retrieval timing. |
 | Grounding controls | Every answer includes citations, retrieved chunks, rerank scores, overlap terms, and answer-support diagnostics. |
-| Deployment proof | Render deployment exposes `/evaluation`; Docker Compose and local API paths are credential-free and reproducible. |
+| Deployment | Render deployment exposes `/evaluation`; Docker Compose and local API paths are credential-free and reproducible. |
 
 ## Overview
 
 - RAG is treated as an inspectable system, not a single prompt call.
 - Retrieval, reranking, citation coverage, and answer support are measurable before deployment.
 - Failure analysis is built into the response contract through query diagnostics, ranking margins, overlap terms, and latency breakdowns.
-- The same project can be discussed for GenAI Engineer, RAG Engineer, AI Backend Engineer, and LLM Applications roles without changing the underlying evidence.
 
 ## Problem
 
