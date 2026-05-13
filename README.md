@@ -6,6 +6,23 @@ This repo is aimed at the production risks companies actually care about: reduci
 
 The current implementation runs fully local and does not require external model credentials or hosted vector infrastructure, so the full retrieval path stays reproducible and inspectable.
 
+## Proof Snapshot
+
+| Signal | Current evidence |
+|---|---|
+| Retrieval quality | Golden-set evaluation passes with `retrieval_hit_rate_at_3=1.0`, `citation_hit_rate=1.0`, and `mean_reciprocal_rank=1.0` on the shipped evaluation set. |
+| Test coverage | `make test` currently passes `11` tests covering API, retrieval, chunking, grounded-answer, and evaluation paths. |
+| Latency visibility | `/query` returns retrieval, answer, and total latency diagnostics; the sample query path reports millisecond-level local retrieval timing. |
+| Grounding controls | Every answer includes citations, retrieved chunks, rerank scores, overlap terms, and answer-support diagnostics. |
+| Deployment proof | Render deployment exposes `/evaluation`; Docker Compose and local API paths are credential-free and reproducible. |
+
+## What This Proves
+
+- RAG is treated as an inspectable system, not a single prompt call.
+- Retrieval, reranking, citation coverage, and answer support are measurable before deployment.
+- Failure analysis is built into the response contract through query diagnostics, ranking margins, overlap terms, and latency breakdowns.
+- The same project can be discussed for GenAI Engineer, RAG Engineer, AI Backend Engineer, and LLM Applications roles without changing the underlying evidence.
+
 ## Problem
 
 Many RAG demos show an answer but do not make the retrieval layer grounded, inspectable, or testable. This project focuses on the infrastructure around the answer: corpus ingestion, chunking, hybrid retrieval, ranking traces, citations, and evaluation hooks that reduce hallucination risk and make retrieval failures debuggable.
