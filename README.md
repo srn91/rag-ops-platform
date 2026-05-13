@@ -6,9 +6,9 @@ This repo is aimed at the production risks companies actually care about: reduci
 
 The current implementation runs fully local and does not require external model credentials or hosted vector infrastructure, so the full retrieval path stays reproducible and inspectable.
 
-## Proof Snapshot
+## Results
 
-| Signal | Current evidence |
+| Area | Details |
 |---|---|
 | Retrieval quality | Golden-set evaluation passes with `retrieval_hit_rate_at_3=1.0`, `citation_hit_rate=1.0`, and `mean_reciprocal_rank=1.0` on the shipped evaluation set. |
 | Test coverage | `make test` currently passes `11` tests covering API, retrieval, chunking, grounded-answer, and evaluation paths. |
@@ -16,7 +16,7 @@ The current implementation runs fully local and does not require external model 
 | Grounding controls | Every answer includes citations, retrieved chunks, rerank scores, overlap terms, and answer-support diagnostics. |
 | Deployment proof | Render deployment exposes `/evaluation`; Docker Compose and local API paths are credential-free and reproducible. |
 
-## What This Proves
+## Overview
 
 - RAG is treated as an inspectable system, not a single prompt call.
 - Retrieval, reranking, citation coverage, and answer support are measurable before deployment.
