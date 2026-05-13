@@ -215,7 +215,7 @@ Current verification snapshot from the latest local run:
 - `make test`: passed (`11 passed`)
 - `make evaluate`: passed with `retrieval_hit_rate_at_3=1.0`, `citation_hit_rate=1.0`, `mean_reciprocal_rank=1.0`, plus latency, faithfulness, completeness, and rerank-margin diagnostics
 
-## Current Capabilities
+## Capabilities
 
 The current implementation supports:
 
