@@ -188,7 +188,8 @@ Under the hood, `docker compose up --build` builds a dedicated image with depend
 
 ## Hosted Deployment
 
-- Live API: [`/evaluation`](https://rag-ops-platform.onrender.com/evaluation)
+- Live demo: [rag-ops-platform.onrender.com](https://rag-ops-platform.onrender.com)
+- Sample API: [`/evaluation`](https://rag-ops-platform.onrender.com/evaluation)
 - Browser smoke: Render-hosted `/evaluation` loaded in a real browser and returned the live retrieval-quality summary with all three golden cases present.
 - Render service config: Python web service on `main`, auto-deploy on commit, region `oregon`, plan `free`, build `pip install -r requirements.txt`, start `uvicorn app.main:app --host 0.0.0.0 --port $PORT`, health check `/health`.
 - Render deploy command: `render deploys create srv-d7n6572pmmbs73cb5i10 --confirm`
