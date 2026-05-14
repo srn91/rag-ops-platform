@@ -9,16 +9,9 @@ client = TestClient(app)
 def test_root() -> None:
     response = client.get("/")
     assert response.status_code == 200
-    payload = response.json()
-    assert payload["project"] == "rag-ops-platform"
-    assert payload["status"] == "local-ready"
-    assert payload["indexed_assets"]["documents"] == 5
-    assert payload["indexed_assets"]["embedding_provider"] == "local_tfidf_svd"
-    assert payload["indexed_assets"]["content_types"] == {
-        "markdown": 3,
-        "html": 1,
-        "pdf": 1,
-    }
+    assert "text/html" in response.headers["content-type"]
+    assert "RAG Ops Platform" in response.text
+    assert "/evaluation" in response.text
 
 
 def test_health() -> None:

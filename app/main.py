@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
 from app.service import RAGService
@@ -18,21 +19,25 @@ app = FastAPI(
 )
 
 
-@app.get("/")
-def root() -> dict[str, object]:
-    return {
-        "project": "rag-ops-platform",
-        "status": "local-ready",
-        "capabilities": [
-            "markdown/html/pdf corpus ingestion",
-            "sentence-aware chunking",
-            "hybrid sparse + dense retrieval",
-            "lightweight reranking",
-            "citation-backed answers",
-            "retrieval evaluation",
-        ],
-        "indexed_assets": service.stats(),
-    }
+@app.get("/", response_class=HTMLResponse)
+def root() -> str:
+    stats = service.stats()
+    return f"""<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG Ops Platform</title>
+<style>body{{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;max-width:860px;margin:48px auto;padding:0 24px;line-height:1.5;color:#111}}a{{color:#0645ad}}</style></head>
+<body>
+<h1>RAG Ops Platform</h1>
+<p>Inspectable RAG service with corpus ingestion, chunking, hybrid retrieval, reranking, citations, and evaluation output.</p>
+<ul><li>Documents indexed: {stats.get("documents")}</li><li>Chunks indexed: {stats.get("chunks")}</li></ul>
+<h2>Open endpoints</h2>
+<ul>
+<li><a href="/evaluation">Evaluation summary</a></li>
+<li><a href="/documents">Indexed documents</a></li>
+<li><a href="/docs">API docs</a></li>
+</ul>
+</body></html>"""
 
 
 @app.get("/health")
