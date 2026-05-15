@@ -6,6 +6,9 @@ This repo is aimed at the production risks companies actually care about: reduci
 
 The current implementation runs fully local and does not require external model credentials or hosted vector infrastructure, so the full retrieval path stays reproducible and inspectable.
 
+**System type:** Production-style engineering system  
+**System brief:** [docs/system-brief.md](docs/system-brief.md)
+
 ## Results
 
 | Area | Details |
